@@ -79,7 +79,7 @@ quiver(X,Y, Z2(:,:,1), Z2(:,:,2))
 
 
 %% Now to solve for density u
-K=15;
+K=10;
 h = 1/K;
 charX = zeros(K);
 ks = 1:K;
@@ -87,7 +87,7 @@ ks = 1:K;
 x0s = [Ks1(:), Ks2(:)]/K;
 paths = zeros([size(x0s),K]); % where we store all points on the characteristics
 us = zeros(size(x0s,1),K); % -||- u of char
-us(:,K) = f_numerical(x0s(1),x0s(2));
+us(:,:,K) = f_numerical(x0s(1),x0s(2));
 paths(:,:,1) = x0s;
 
 vnt = @(X,Y) v_numerical(X',Y')'; % some spaghetti code to fix inconsistensies in sizing
@@ -96,7 +96,7 @@ for i=2:K
     paths(:,:,i) = paths(:,:,i-1)-vnt(paths(:,1,i-1),paths(:,2,i-1))*h; 
 end
 for i=1:K-1
-    us(:,K-i) = us(:,K+1-i)+fnt(paths(:,1,K+1-i),paths(:,2,K+1-i))*h;
+    us(:,:,K-i) = us(:,:,K+1-i)+fnt(paths(:,1,i-1),paths(:,2,i-1))*h;
 end
 
 figure(3)
@@ -106,9 +106,5 @@ for i=1:K*K
 end
 scatter(x0s(:,1), x0s(:,2))
 
-plot(squeeze(paths(i,1,:)),squeeze(paths(i,1,:)));
-plot(squeeze(paths(i,1,:)),squeeze(paths(i,2,:)));
-
-figure(4)
-mesh(linspace(0,1,K),linspace(0,1,K), reshape(us(:,1),K,K))
-
+X=plot(squeeze(paths(i,1,:)),squeeze(paths(i,1,:)));
+Y=plot(squeeze(paths(i,1,:)),squeeze(paths(i,2,:)));

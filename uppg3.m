@@ -41,16 +41,16 @@ end
 
 dumbData = @(x) initData2(x);
 
-gay = diffDiffusion(endtime, timestep, interval, spacestep, initData);
-doublegay = diffDiffusion ...
+g = diffDiffusion(endtime, timestep, interval, spacestep, initData);
+dg = diffDiffusion ...
 (endtime, timestep, interval, spacestep, dumbData);
 
 figure
-mesh(gay)
+mesh(g)
 
 hold on 
 
-mesh(doublegay)
+mesh(dg)
 
 %% This uses the Fourier method instead
 
