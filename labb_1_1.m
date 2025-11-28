@@ -111,4 +111,5 @@ plot(squeeze(paths(i,1,:)),squeeze(paths(i,2,:)));
 
 figure(4)
 mesh(linspace(0,1,K),linspace(0,1,K), reshape(us(:,1),K,K))
-
+figure(5)
+contour(linspace(0,1,K),linspace(0,1,K), reshape(us(:,1),K,K))
