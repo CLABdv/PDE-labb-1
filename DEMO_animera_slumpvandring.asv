@@ -8,8 +8,8 @@ clc;
 % Först måste vi definiera några parametrar:
 
 K = 2000; % Antal partiklar
-c = 0.02; % c - diffusionsparameter
-%c = 0.5;
+%c = 0.02; % c - diffusionsparameter
+c = 1;
 N = 100; % Antal tidssteg
 M = 40; % Antal punkter i rutnätet längsmed x- och y-axlarna
 dt = .01; % Tidsstegens storlek

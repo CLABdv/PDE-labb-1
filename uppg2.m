@@ -87,7 +87,7 @@ ks = 1:K;
 x0s = [Ks1(:), Ks2(:)]/K;
 paths = zeros([size(x0s),K]); % where we store all points on the characteristics
 us = zeros(size(x0s,1),K); % -||- u of char
-us(:,K) = f_numerical(x0s(1),x0s(2));
+us(:,K) = 0;
 paths(:,:,1) = x0s;
 
 vnt = @(X,Y) v_numerical(X',Y')'; % some spaghetti code to fix inconsistensies in sizing

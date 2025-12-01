@@ -14,11 +14,10 @@ function vals = diffDiffusion(endtime, timestep, interval, spacestep, ...
     vals(:, end) = zeros(timesteps,1);
 
    % Add the initial values.
-    vals(1,:) = arrayfun(initData, linspace(interval(1),interval(2), ...
-        spacesteps));
+    vals(1,:) = arrayfun(initData, linspace(interval(1),interval(2), spacesteps));
 
-    for i = 2:1:timesteps
-        for j = 2:1:(spacesteps -1)
+    for i = 2:timesteps
+        for j = 2:(spacesteps -1)
             vals(i, j) = s * (vals(i-1, j+1) + vals(i-1, j-1)) ...
             + (1-2*s) * vals(i-1, j);
         end
@@ -42,14 +41,11 @@ end
 dumbData = @(x) initData2(x);
 
 g = diffDiffusion(endtime, timestep, interval, spacestep, initData);
-dg = diffDiffusion ...
-(endtime, timestep, interval, spacestep, dumbData);
+dg = diffDiffusion(endtime, timestep, interval, spacestep, dumbData);
 
-figure
+figure(1)
 mesh(g)
-
-hold on 
-
+figure(2)
 mesh(dg)
 
 %% This uses the Fourier method instead
@@ -72,8 +68,7 @@ function y = diffKer(coeffs, len, l, x,t)
     end
 end
 
-function vals = fouDiffusion(endtime, timestep, interval, spacestep, ...
-initData, deg)
+function vals = fouDiffusion(endtime, timestep, interval, spacestep, initData, deg)
     length = interval(2)-interval(1);
     timesteps = endtime/ timestep;
     spacesteps = length / spacestep;
@@ -120,6 +115,10 @@ initDataNew = @(x) x .* (pi -x);
 vals = fouDiffusion(endtime, timestep, interval, spacestep, ...
 initDataNew, deg);
 
-figure
+figure(3)
 mesh(vals)
 %%
+
+quotient = timestep/spacestep^2 % we hold the quotient constant
+
+
