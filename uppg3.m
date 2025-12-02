@@ -28,25 +28,25 @@ endtime = 0.5;
 interval = [0,pi];
 timestep = 0.005;
 spacestep = pi/20; % should guarantee stability-ish
-initData = @(x) x * (pi - x);
+initData = @(x) x .* (pi - x);
 
 function y = initData2(x)
-    if (0 <= x) && (x < 1)
-        y = x;
-    else
-        y = 0;
-    end
+    disp("size is")
+    disp(size(x))
+    % for vectorization, return x if true 0 otherwise. Elementwise && is
+    % the same as multiplication (we are only operating on {0,1})
+    y = x.* ((0 <= x) .* (x < 1)); 
 end
 
-dumbData = @(x) initData2(x);
-
 g = diffDiffusion(endtime, timestep, interval, spacestep, initData);
-dg = diffDiffusion(endtime, timestep, interval, spacestep, dumbData);
+dg = diffDiffusion(endtime, timestep, interval, spacestep, @initData2);
 
 figure(1)
 mesh(g)
+title("FDM first initdata")
 figure(2)
 mesh(dg)
+title("FDM second initdata")
 
 %% This uses the Fourier method instead
 
@@ -110,15 +110,18 @@ timestep = 0.01;
 interval = [0,pi];
 spacestep = pi/10;
 deg = 7;
-initDataNew = @(x) x .* (pi -x);
 
-vals = fouDiffusion(endtime, timestep, interval, spacestep, ...
-initDataNew, deg);
-
+vals = fouDiffusion(endtime, timestep, interval, spacestep, initData, deg);
 figure(3)
 mesh(vals)
+title("fourier first initdata")
+
+vals = fouDiffusion(endtime, timestep, interval, spacestep, @initData2, deg);
+figure(4)
+mesh(vals)
+title("fourier second initdata")
 %%
 
-quotient = timestep/spacestep^2 % we hold the quotient constant
+quotient = timestep/spacestep^2; % we hold the quotient constant
 
 

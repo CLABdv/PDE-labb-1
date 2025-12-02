@@ -79,7 +79,7 @@ quiver(X,Y, Z2(:,:,1), Z2(:,:,2))
 
 
 %% Now to solve for density u
-K=15;
+K=25;
 h = 1/K;
 charX = zeros(K);
 ks = 1:K;
@@ -91,12 +91,18 @@ us(:,K) = 0;
 paths(:,:,1) = x0s;
 
 vnt = @(X,Y) v_numerical(X',Y')'; % some spaghetti code to fix inconsistensies in sizing
-fnt = @(X,Y) f_numerical(X',Y')';
+%fnt = @(X,Y) f_numerical(X',Y')';
+function U = fnt(X,Y, f_numerical)
+    % bounds
+    mask = (X > 0) .* (Y > 0);
+    U = mask .* f_numerical(X', Y')';
+end
+
 for i=2:K
     paths(:,:,i) = paths(:,:,i-1)-vnt(paths(:,1,i-1),paths(:,2,i-1))*h; 
 end
 for i=1:K-1
-    us(:,K-i) = us(:,K+1-i)+fnt(paths(:,1,K+1-i),paths(:,2,K+1-i))*h;
+    us(:,K-i) = us(:,K+1-i)+fnt(paths(:,1,K+1-i),paths(:,2,K+1-i), f_numerical)*h;
 end
 
 figure(3)
